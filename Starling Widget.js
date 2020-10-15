@@ -63,6 +63,7 @@ async function createWidget(size) {
     const colors = colorConfig();
     const widget = new ListWidget();
     const data = await fetchData();
+    const footerFont = new Font("Helvetica",13)
 
     const starlingLogo = await getAsset('starling-logo')
 
@@ -80,12 +81,16 @@ async function createWidget(size) {
         widget.addSpacer(4)
         let titleStack = widget.addStack()
         titleStack.cornerRadius = 4
-        titleStack.setPadding(2, 5, 2, 5)
+        titleStack.setPadding(5, 5, 2, 5)
         let wtitle = titleStack.addText("Starling Balance: £" + insertDecimal(data))
         wtitle.font = Font.semiboldRoundedSystemFont(14)
         wtitle.textColor = colors.textColor
-        widget.addSpacer(4)
-        const contentStack = widget.addStack();
+        widget.addSpacer(40)
+        titleStack.addSpacer();
+
+        let theFooter = widget.addText("Updated: " + await timehMMSS())
+        theFooter.font = footerFont
+        theFooter.textColor = colors.textColor
 
   }
 
@@ -150,3 +155,9 @@ function insertDecimal(num) {
     }
   }
   
+
+// ** Generates time output in specific format for bottom of Widget
+async function timehMMSS() {
+  var theDate = new Date() 
+  return theDate.getHours() + ":" + ("0"+theDate.getMinutes()).slice(-2) + ":" + ("0"+theDate.getSeconds()).slice(-2)
+}
